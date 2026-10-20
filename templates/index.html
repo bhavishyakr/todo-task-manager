@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaskFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">TaskFlow</div>
+
+      <div class="progress" aria-label="Overall progress">
+        <svg viewBox="0 0 120 120" class="ring">
+          <circle cx="60" cy="60" r="52" class="ring-bg"/>
+          <circle cx="60" cy="60" r="52" class="ring-fg" id="ring-fg" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+        </svg>
+        <div class="ring-label"><strong id="percent">0%</strong><span>done</span></div>
+      </div>
+      <p class="progress-text" id="progress-text">No tasks yet</p>
+
+      <nav class="filters" id="status-filters" aria-label="Task views">
+        <button data-status="all" class="active">All tasks <span id="c-all">0</span></button>
+        <button data-status="active">Active <span id="c-active">0</span></button>
+        <button data-status="completed">Completed <span id="c-completed">0</span></button>
+        <button data-status="overdue">Overdue <span id="c-overdue">0</span></button>
+      </nav>
+
+      <h2 class="side-title">Categories</h2>
+      <nav class="filters" id="category-filters" aria-label="Categories"></nav>
+
+      <div class="user-box">
+        <div><strong id="user-name">…</strong><small id="user-email"></small></div>
+        <button class="btn ghost" id="logout-btn">Log out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="main-head">
+        <div>
+          <h1 id="greeting">Your tasks</h1>
+          <p id="subhead" class="muted"></p>
+        </div>
+        <button class="btn primary" id="new-task-btn">+ Add task</button>
+      </header>
+
+      <div class="toolbar">
+        <input type="search" id="search" placeholder="Search tasks" aria-label="Search tasks">
+        <select id="priority-filter" aria-label="Filter by priority">
+          <option value="all">Any priority</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <select id="sort" aria-label="Sort tasks">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="due">Due date</option>
+          <option value="priority">Priority</option>
+          <option value="title">Title A–Z</option>
+        </select>
+        <button class="btn ghost" id="clear-completed">Clear completed</button>
+      </div>
+
+      <ul id="task-list" class="task-list"></ul>
+      <div id="empty" class="empty" hidden></div>
+    </main>
+  </div>
+
+  <dialog id="task-dialog">
+    <form id="task-form" method="dialog">
+      <h2 id="dialog-title">Add task</h2>
+      <div id="form-error" class="alert" hidden></div>
+      <input type="hidden" name="id">
+      <label>Title <input type="text" name="title" maxlength="120" required placeholder="e.g. Submit Python project report"></label>
+      <label>Details <textarea name="description" rows="3" maxlength="1000" placeholder="Optional notes"></textarea></label>
+      <div class="row">
+        <label>Category <input type="text" name="category" list="category-list" maxlength="30" value="General"></label>
+        <label>Priority
+          <select name="priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+        <label>Due date <input type="date" name="due_date"></label>
+      </div>
+      <datalist id="category-list"></datalist>
+      <div class="dialog-actions">
+        <button type="button" class="btn ghost" id="cancel-btn">Cancel</button>
+        <button type="submit" class="btn primary" id="save-btn">Save task</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
